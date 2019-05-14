@@ -14,7 +14,6 @@ public class Cliente {
 
 	//Construtor cheio
 	public Cliente(int id, String nome, String email, String telefone, int idade) {
-		super();
 		this.id = id;
 		this.nome = nome;
 		this.email = email;
