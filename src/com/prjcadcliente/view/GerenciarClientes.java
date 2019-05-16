@@ -181,12 +181,7 @@ public class GerenciarClientes extends JFrame {
 		// ---------- Criar colunas na janela do CONSTRUTO00R!!
 		String[] colunas = {"Id", "Nome", "E-Mail", "Telefone", "Idade"};
 		
-		Object [][] dados = {
-									{15, "Roberto", "roberto@gmail.com", "11", 12},
-									{14, "Carioca", "carioca@gmail.com", "14", 18},
-									{24, "Roberta", "roberta@gmail.com", "12", 14},
-									{11, "Leandro", "leandro@gmail.com", "20", 14}
-								};
+		Object [][] dados = crud.PesquisarTodos().toArray(new Object[][] {});//deu erro
 		
 		//Vamos construir o modelo de dados para exibir na tabela
 		DefaultTableModel modelo = new DefaultTableModel(dados, colunas);
