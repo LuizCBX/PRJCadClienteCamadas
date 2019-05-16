@@ -39,7 +39,7 @@ public class CRUDCliente {
 		//Criação dos objetos para a conexao com o banco de dados
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3307//clientedb","root","");//conexao com o banco de dados
+			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/clientedb?serverTimezone=UTC","root","");//conexao com o banco de dados
 			
 			String consulta = "INSERT INTO tbcliente(nome, email, telefone, idade) values(?, ?, ?, ?)";//"?" é igual parametros
 			
@@ -77,11 +77,11 @@ public class CRUDCliente {
 		//Criação dos objetos para a conexao com o banco de dados
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3307//clientedb","root","");
+			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/clientedb?serverTimezone=UTC","root","");
 			
 			
 			//------------ Não se faz update sem WHERE
-			String consulta = "UPDATE tbcliente SET nome=?, email=?, telefone=?, idade=? WHERE id?";
+			String consulta = "UPDATE tbcliente SET nome=?, email=?, telefone=?, idade=? WHERE id=?";
 			
 			
 			pst = con.prepareStatement(consulta);
@@ -119,7 +119,7 @@ public class CRUDCliente {
 		//Criação dos objetos para a conexao com o banco de dados
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3307//clientedb","root","");
+			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/clientedb?serverTimezone=UTC","root","");
 			
 			String consulta = "DELETE FROM tbcliente WHERE id=?";
 			
@@ -157,7 +157,7 @@ public class CRUDCliente {
 			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
 			
 			//Chamar o gerenciar de driver
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/clientedb","root","");
+			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/clientedb?serverTimezone=UTC","root","");
 			
 			//vamos criar a consulta para selecionar os clientes por nome
 			String consulta = "Select * from tbcliente where nome=?";
@@ -199,9 +199,57 @@ public class CRUDCliente {
 		return lista;
 	}
 		
-	public Cliente PequisarPorId(String id){
-		return null;
+	public Cliente PequisarPorId(int id){
+		
+		Cliente cliente = new Cliente();
+		
+		try {
+			//carregar o drive de comunicação com o banco de dados
+			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+			
+			//Chamar o gerenciar de driver
+			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/clientedb?serverTimezone=UTC","root","");
+			
+			//vamos criar a consulta para selecionar os clientes por nome
+			String consulta = "Select * from tbcliente where id=?";
+			
+			pst = con.prepareStatement(consulta);
+			
+			pst.setInt(1, id);//parametro
+			
+			//Vamos executar a consulta e guardar o resultado na variavel rs
+			rs = pst.executeQuery();
+			
+			/*
+			 * Vamos pegar um cliente por vez que está no rs e adicioná-lo
+			 * a lista cheia de clientes para, então retorná-la
+			 */
+			
+			if(rs.next()) {
+				cliente.setId(rs.getInt(0));
+				cliente.setNome(rs.getString(1));
+				cliente.setEmail(rs.getString(2));
+				cliente.setTelefone(rs.getString(3));
+				cliente.setIdade(rs.getInt(4));
+			}
+			
+		}//fim do try
+		
+		catch(SQLException ex) {
+			ex.printStackTrace();
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		finally {
+			
+			try {con.close();} catch(Exception e ) {e.printStackTrace();}
+		}
+		return cliente;
+
 	}
+	
 	
 	public List<Cliente> PesquisarTodos(){
 		
@@ -212,7 +260,7 @@ public class CRUDCliente {
 			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
 			
 			//Chamar o gerenciar de driver
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/clientedb","root","");
+			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/clientedb?serverTimezone=UTC","root","");
 			
 			//vamos criar a consulta para selecionar os clientes por nome
 			String consulta = "Select * from tbcliente";
