@@ -277,11 +277,11 @@ public class CRUDCliente {
 			
 			while(rs.next()) {
 				lista.add(new Cliente(
-						rs.getInt(0),
-						rs.getString(1),
+						rs.getInt(1),
 						rs.getString(2),
 						rs.getString(3),
-						rs.getInt(4)
+						rs.getString(4),
+						rs.getInt(5)
 						));
 			}//fim do while/enquanto
 		}//fim do try

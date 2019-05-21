@@ -83,6 +83,7 @@ public class GerenciarClientes extends JFrame {
 				txtEmail.setText("");
 				txtTelefone.setText("");
 				txtIdade.setText("");
+				carregarDados();
 				
 			}
 		});
@@ -174,6 +175,11 @@ public class GerenciarClientes extends JFrame {
 		btnDeletar.setBounds(212, 231, 89, 23);
 		contentPane.add(btnDeletar);
 		
+	carregarDados();
+	
+	}
+	// -----------------------------------
+	private void carregarDados() {
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(20, 265, 380, 144);
 		contentPane.add(scrollPane);
@@ -181,10 +187,19 @@ public class GerenciarClientes extends JFrame {
 		// ---------- Criar colunas na janela do CONSTRUTO00R!!
 		String[] colunas = {"Id", "Nome", "E-Mail", "Telefone", "Idade"};
 		
-		Object [][] dados = crud.PesquisarTodos().toArray(new Object[][] {});//deu erro
 		
 		//Vamos construir o modelo de dados para exibir na tabela
-		DefaultTableModel modelo = new DefaultTableModel(dados, colunas);
+		DefaultTableModel modelo = new DefaultTableModel(colunas,0);
+		
+		for(Cliente c : crud.PesquisarTodos()) {
+			modelo.addRow(new Object[] {
+					c.getId(),
+					c.getNome(),
+					c.getEmail(),
+					c.getTelefone(),
+					c.getIdade()
+			});
+		}
 		
 		
 		tbClienteCadastro = new JTable(modelo);
